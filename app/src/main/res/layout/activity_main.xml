@@ -21,6 +21,13 @@
         map:menu_labels_position="right">
 
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/btn_cerrar_sesion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_close_white_24"
+            map:fab_label="Cerrar sesión"/>
+
+        <com.github.clans.fab.FloatingActionButton
             android:id="@+id/btn_localizar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

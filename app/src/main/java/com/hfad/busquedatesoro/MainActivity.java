@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -146,6 +147,16 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 if (mCurrLocationMarker != null){
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mCurrLocationMarker.getPosition(), 18));
                 }
+            }
+        });
+
+        FloatingActionButton fabCerrarSesion = (FloatingActionButton) findViewById(R.id.btn_cerrar_sesion);
+        fabCerrarSesion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginManager.getInstance().logOut();
+                Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(loginIntent);
             }
         });
     }
