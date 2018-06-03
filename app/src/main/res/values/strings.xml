@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">BusquedaTesoro</string>
+    <string name="title_activity_main">Busqueda Tesoro</string>
+</resources>
