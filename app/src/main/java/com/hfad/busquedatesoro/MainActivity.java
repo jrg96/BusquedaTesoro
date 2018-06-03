@@ -1,6 +1,7 @@
 package com.hfad.busquedatesoro;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Looper;
@@ -12,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 
+import com.facebook.AccessToken;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -53,6 +55,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Creando listeners
         this.crearListeners();
+
+        // Si no hay access token, redirigir a logueo FB
+        if (AccessToken.getCurrentAccessToken() == null) {
+            Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(loginIntent);
+        }
     }
 
     @Override
