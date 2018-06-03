@@ -70,7 +70,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     /*
-     * Funcion: onRequestPermissionsResult
+     * Funcion: onRequestPermissionsResult datos
      *
      * Descripcion: Funcion para pedir permisos, en caso de obtener el permiso para obtener ubicacion
      * llama a executeLocationLogic para obtener la locacion del usuario
