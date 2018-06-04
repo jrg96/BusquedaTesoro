@@ -17,6 +17,7 @@ public class LoginActivity extends AppCompatActivity {
     // Definiendo permisos para la app de facebook
     private static final String EMAIL = "email";
     private static final String USER_POSTS = "user_posts";
+    private static final String PUBLIC_PROFILE = "public_profile";
 
     // Manager para la devuelta de info
     private CallbackManager mCallbackManager;
@@ -35,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         // Asignando permisos de login
         mCallbackManager = CallbackManager.Factory.create();
         LoginButton mLoginButton = findViewById(R.id.login_button);
-        mLoginButton.setReadPermissions(Arrays.asList(EMAIL, USER_POSTS));
+        mLoginButton.setReadPermissions(Arrays.asList(EMAIL, USER_POSTS, PUBLIC_PROFILE));
 
         // registrando callback
         mLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {

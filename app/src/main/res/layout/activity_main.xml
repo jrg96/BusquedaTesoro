@@ -34,5 +34,12 @@
             android:src="@drawable/baseline_location_searching_white_24"
             map:fab_label="Encuentrame"/>
 
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/btn_agregar_tesoro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add_white_24dp"
+            map:fab_label="Publicar tesoro"/>
+
     </com.github.clans.fab.FloatingActionMenu>
 </FrameLayout>

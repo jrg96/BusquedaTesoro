@@ -159,5 +159,15 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 startActivity(loginIntent);
             }
         });
+
+        FloatingActionButton fabCrearTesoro = (FloatingActionButton) findViewById(R.id.btn_agregar_tesoro);
+        fabCrearTesoro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginManager.getInstance().logOut();
+                Intent loginIntent = new Intent(MainActivity.this, TesoroCrearActivity.class);
+                startActivity(loginIntent);
+            }
+        });
     }
 }
