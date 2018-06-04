@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
@@ -31,6 +32,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
@@ -43,6 +45,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationCallback mLocationCallback;
 
     private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +69,16 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             this.cerrarSesion();
             Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(loginIntent);
+        } else {
+            mUser = mAuth.getCurrentUser();
         }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        mUser = mAuth.getCurrentUser();
+        Toast.makeText(this, "Adquiriendo usuario despues de Auth", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -159,7 +171,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         fabCerrarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginManager.getInstance().logOut();
+                cerrarSesion();
                 Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(loginIntent);
             }
@@ -169,7 +181,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         fabCrearTesoro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cerrarSesion();
                 Intent loginIntent = new Intent(MainActivity.this, TesoroCrearActivity.class);
                 startActivity(loginIntent);
             }
