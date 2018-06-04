@@ -31,6 +31,7 @@ public class TesoroCrearActivity extends AppCompatActivity {
     }
 
     private void cerrarSesion(){
+        // Cerrando datos de sesion
         try {
             LoginManager.getInstance().logOut();
         } catch (Exception e){

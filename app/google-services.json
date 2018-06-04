@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "611711252071",
+    "firebase_url": "https://busquedatesoro-84a83.firebaseio.com",
+    "project_id": "busquedatesoro-84a83",
+    "storage_bucket": "busquedatesoro-84a83.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:611711252071:android:a5886b3220197247",
+        "android_client_info": {
+          "package_name": "com.hfad.busquedatesoro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "611711252071-3dga4lh30ieh1hadv9sd5tbdc7uqlvk2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hfad.busquedatesoro",
+            "certificate_hash": "4316e491ce851c6080ddd4d0ef19ffacd86d0e8b"
+          }
+        },
+        {
+          "client_id": "611711252071-ab67djk62koidtcc3m60io5ac7pi5kin.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "611711252071-ab67djk62koidtcc3m60io5ac7pi5kin.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-1hpUTpUCs73bMDh3LUa8OeE3sjjj8Wc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "611711252071-ab67djk62koidtcc3m60io5ac7pi5kin.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
