@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import com.github.clans.fab.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -41,6 +42,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationCallback mLocationCallback;
 
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +51,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Obteniendo el servicio fusedlocation
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mAuth = FirebaseAuth.getInstance();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -57,8 +61,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         // Creando listeners
         this.crearListeners();
 
-        // Si no hay access token, redirigir a logueo FB
-        if (AccessToken.getCurrentAccessToken() == null) {
+        // Si no hay access token o usuario, cerrar residuos de sesion, redirigir a logueo FB
+        if ((AccessToken.getCurrentAccessToken() == null) || (mAuth.getCurrentUser() == null)) {
+            this.cerrarSesion();
             Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(loginIntent);
         }
@@ -164,10 +169,23 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         fabCrearTesoro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginManager.getInstance().logOut();
+                cerrarSesion();
                 Intent loginIntent = new Intent(MainActivity.this, TesoroCrearActivity.class);
                 startActivity(loginIntent);
             }
         });
+    }
+
+
+    private void cerrarSesion(){
+        try {
+            LoginManager.getInstance().logOut();
+        } catch (Exception e){
+        }
+
+        try {
+            FirebaseAuth.getInstance().signOut();
+        } catch (Exception e){
+        }
     }
 }
