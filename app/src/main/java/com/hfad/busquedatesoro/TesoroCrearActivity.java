@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ServerValue;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -26,6 +27,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class TesoroCrearActivity extends AppCompatActivity {
@@ -93,7 +96,7 @@ public class TesoroCrearActivity extends AppCompatActivity {
 
         if (!txtTextoTesoro.getText().toString().isEmpty() || (mAttachmentUri != null)){
 
-            String texto = txtTextoTesoro.getText().toString();
+            final String texto = txtTextoTesoro.getText().toString();
 
             Random r = new Random();
             Calendar calendar = Calendar.getInstance();
@@ -109,7 +112,22 @@ public class TesoroCrearActivity extends AppCompatActivity {
                         rutaArch.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                Toast.makeText(TesoroCrearActivity.this, "Exito: imagen subida con exito", Toast.LENGTH_SHORT).show();
+                                // Si llegamos hasta aqui, significa que la imagen fue subida con exito
+                                Map<String, Object> postMap = new HashMap<>();
+                                postMap.put("url_imagen", uri.toString());
+                                postMap.put("tesoro_texto", texto);
+                                postMap.put("id_usuario", mUser.getUid());
+
+                                firebaseFirestore.collection("tesoros").add(postMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                                        if (task.isSuccessful()){
+                                            Toast.makeText(TesoroCrearActivity.this, "Tesoro publicado con exito", Toast.LENGTH_SHORT).show();
+                                        } else{
+                                            Toast.makeText(TesoroCrearActivity.this, "Error al publicar tesoro", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
                             }
                         });
                     } else {
