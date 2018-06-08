@@ -181,8 +181,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         fabCrearTesoro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent loginIntent = new Intent(MainActivity.this, TesoroCrearActivity.class);
-                startActivity(loginIntent);
+                Intent intent = new Intent(MainActivity.this, TesoroCrearActivity.class);
+                intent.putExtra("latitud", "" + mCurrLocationMarker.getPosition().latitude);
+                intent.putExtra("longitud", "" + mCurrLocationMarker.getPosition().longitude);
+                startActivity(intent);
             }
         });
     }

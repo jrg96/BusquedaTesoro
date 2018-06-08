@@ -47,10 +47,18 @@ public class TesoroCrearActivity extends AppCompatActivity {
     private StorageReference storageReference;
     private FirebaseFirestore firebaseFirestore;
 
+    private String latitud;
+    private String longitud;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tesoro_crear);
+
+        // Obteniendo datos del intent principal (latitud y longitud)
+        Intent intent = getIntent();
+        latitud = intent.getStringExtra("latitud");
+        longitud = intent.getStringExtra("longitud");
 
         // Obteniendo controles del layout
         imgTesoro = findViewById(R.id.imgTesoro);
@@ -114,6 +122,8 @@ public class TesoroCrearActivity extends AppCompatActivity {
                             public void onSuccess(Uri uri) {
                                 // Si llegamos hasta aqui, significa que la imagen fue subida con exito
                                 Map<String, Object> postMap = new HashMap<>();
+                                postMap.put("latitud", Double.parseDouble(latitud));
+                                postMap.put("longitud", Double.parseDouble(longitud));
                                 postMap.put("url_imagen", uri.toString());
                                 postMap.put("tesoro_texto", texto);
                                 postMap.put("id_usuario", mUser.getUid());

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "611711252071-idqcmhe9rt4apj2ss0oi62s04dc7aoo1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hfad.busquedatesoro",
+            "certificate_hash": "b505c1196600d6b76d805620b84545714939463d"
+          }
+        },
+        {
           "client_id": "611711252071-3dga4lh30ieh1hadv9sd5tbdc7uqlvk2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
