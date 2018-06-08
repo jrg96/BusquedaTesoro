@@ -33,8 +33,17 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.hfad.modelo.Tesoro;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -46,6 +55,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
+    private FirebaseFirestore firebaseFirestore;
+
+    private List<Tesoro> listaTesoros = new ArrayList<Tesoro>();
+    private List<Marker> listaMarcadoresTesoros = new ArrayList<Marker>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +86,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         } else {
             mUser = mAuth.getCurrentUser();
         }
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -93,6 +109,22 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             this.executeLocationLogic();
             mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
         }
+
+        firebaseFirestore.collection("tesoros").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
+                    if (doc.getType() == DocumentChange.Type.ADDED){
+                        Tesoro tesoro = doc.getDocument().toObject(Tesoro.class);
+                        listaTesoros.add(tesoro);
+
+                        Marker marcador =  mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(tesoro.latitud, tesoro.longitud)));
+                        listaMarcadoresTesoros.add(marcador);
+                    }
+                }
+            }
+        });
     }
 
     /*
