@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,13 +16,23 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.hfad.adapter.ComentarioRecyclerAdapter;
+import com.hfad.modelo.Comentario;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Nullable;
 
 import io.opencensus.stats.View;
 
@@ -30,6 +42,10 @@ public class TesoroDescripcionActivity extends AppCompatActivity {
     private TextView blog_desc;
     private EditText comment_field;
     private ImageView comment_post_btn;
+
+    private RecyclerView lista_comentario;
+    private ComentarioRecyclerAdapter comentarioRecyclerAdapter;
+    private List<Comentario> listaComentarios;
 
     private String tesoro_id;
     private FirebaseAuth mAuth;
@@ -47,6 +63,7 @@ public class TesoroDescripcionActivity extends AppCompatActivity {
         blog_desc = findViewById(R.id.blog_desc);
         comment_field = findViewById(R.id.comment_field);
         comment_post_btn = findViewById(R.id.comment_post_btn);
+        lista_comentario = findViewById(R.id.lista_comentario);
 
         // Obteniendo intento y llenando de datos
         Intent intent = getIntent();
@@ -56,6 +73,7 @@ public class TesoroDescripcionActivity extends AppCompatActivity {
         Picasso.with(getApplicationContext()).load(intent.getStringExtra("url_imagen")).into(blog_image);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
+
         /*
          * Autenticacion de Firebase
          */
@@ -73,6 +91,32 @@ public class TesoroDescripcionActivity extends AppCompatActivity {
             @Override
             public void onClick(android.view.View view) {
                 btn_enviar_mensaje();
+            }
+        });
+
+
+        // Preparando recyclerView
+        listaComentarios = new ArrayList<>();
+        comentarioRecyclerAdapter = new ComentarioRecyclerAdapter(listaComentarios);
+        lista_comentario.setHasFixedSize(true);
+        lista_comentario.setLayoutManager(new LinearLayoutManager(this));
+        lista_comentario.setAdapter(comentarioRecyclerAdapter);
+
+        // Listener de comentarios en firebase
+        firebaseFirestore.collection("tesoros/" + tesoro_id + "/comentarios").addSnapshotListener(this, new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (!queryDocumentSnapshots.isEmpty()){
+                    for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
+
+                        if (doc.getType() == DocumentChange.Type.ADDED){
+                            Comentario comentario = doc.getDocument().toObject(Comentario.class);
+                            listaComentarios.add(comentario);
+                            comentarioRecyclerAdapter.notifyDataSetChanged();
+                        }
+
+                    }
+                }
             }
         });
     }
@@ -93,6 +137,7 @@ public class TesoroDescripcionActivity extends AppCompatActivity {
                     if (!task.isSuccessful()){
                         Toast.makeText(TesoroDescripcionActivity.this, "Error al publicar comentario, intentelo nuevamente", Toast.LENGTH_SHORT).show();
                     } else {
+                        comment_field.setText("");
                         Toast.makeText(TesoroDescripcionActivity.this, "Comentario publicado!!", Toast.LENGTH_SHORT).show();
                     }
                 }
