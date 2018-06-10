@@ -127,6 +127,7 @@ public class TesoroCrearActivity extends AppCompatActivity {
                                 postMap.put("url_imagen", uri.toString());
                                 postMap.put("tesoro_texto", texto);
                                 postMap.put("id_usuario", mUser.getUid());
+                                postMap.put("correo_usuario", mUser.getEmail());
                                 postMap.put("timestamp", FieldValue.serverTimestamp());
 
                                 firebaseFirestore.collection("tesoros").add(postMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {

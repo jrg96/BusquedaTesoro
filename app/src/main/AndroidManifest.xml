@@ -45,8 +45,9 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"></activity>
-        <activity android:name=".TesoroCrearActivity"></activity>
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" />
+        <activity android:name=".TesoroCrearActivity" />
+        <activity android:name=".TesoroDescripcionActivity"></activity>
     </application>
 
 </manifest>
