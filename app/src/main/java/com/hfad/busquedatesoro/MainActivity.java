@@ -115,7 +115,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
                     if (doc.getType() == DocumentChange.Type.ADDED){
+
+                        String tesoroId = doc.getDocument().getId();
                         Tesoro tesoro = doc.getDocument().toObject(Tesoro.class);
+                        tesoro.setTesoro_id(tesoroId);
+
                         listaTesoros.add(tesoro);
 
                         Marker marcador =  mMap.addMarker(new MarkerOptions()
@@ -236,6 +240,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+
+    /*
+     * Funcion: onMarkerClick
+     *
+     * Descripcion: responde a cuando un usuario ha realizado click en un marcador, esto lo mandara
+     * a otra actividad para mostrar la informacion del marcador
+     */
     @Override
     public boolean onMarkerClick(Marker marker) {
         int i = listaMarcadoresTesoros.indexOf(marker);
@@ -247,6 +258,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             intent.putExtra("url_imagen", tesoro.getUrl_imagen());
             intent.putExtra("correo_usuario", tesoro.getCorreo_usuario());
             intent.putExtra("tesoro_texto", tesoro.getTesoro_texto());
+            intent.putExtra("tesoro_id", tesoro.getTesoro_id());
             startActivity(intent);
         }
 

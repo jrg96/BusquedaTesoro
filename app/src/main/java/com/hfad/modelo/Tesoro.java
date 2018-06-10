@@ -12,8 +12,17 @@ public class Tesoro {
     public String tesoro_texto;
     public String url_imagen;
     public Timestamp timestamp;
+    public String tesoro_id;
 
     public Tesoro(){
+    }
+
+    public String getTesoro_id() {
+        return tesoro_id;
+    }
+
+    public void setTesoro_id(String tesoro_id) {
+        this.tesoro_id = tesoro_id;
     }
 
     public Tesoro(String id_usuario, double latitud, double longitud, String tesoro_texto, String url_imagen, Timestamp timestamp, String correo_usuario) {
