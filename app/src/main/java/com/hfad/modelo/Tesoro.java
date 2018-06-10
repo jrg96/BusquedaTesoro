@@ -6,6 +6,7 @@ import java.sql.Time;
 
 public class Tesoro {
     public String id_usuario;
+    public String correo_usuario;
     public double latitud;
     public double longitud;
     public String tesoro_texto;
@@ -15,13 +16,22 @@ public class Tesoro {
     public Tesoro(){
     }
 
-    public Tesoro(String id_usuario, double latitud, double longitud, String tesoro_texto, String url_imagen, Timestamp timestamp) {
+    public Tesoro(String id_usuario, double latitud, double longitud, String tesoro_texto, String url_imagen, Timestamp timestamp, String correo_usuario) {
         this.id_usuario = id_usuario;
         this.latitud = latitud;
         this.longitud = longitud;
         this.tesoro_texto = tesoro_texto;
         this.url_imagen = url_imagen;
         this.timestamp = timestamp;
+        this.correo_usuario = correo_usuario;
+    }
+
+    public String getCorreo_usuario() {
+        return correo_usuario;
+    }
+
+    public void setCorreo_usuario(String correo_usuario) {
+        this.correo_usuario = correo_usuario;
     }
 
     public String getId_usuario() {

@@ -45,7 +45,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MainActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     private LocationRequest mLocationRequest;
@@ -125,6 +125,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         });
+
+        mMap.setOnMarkerClickListener(this);
     }
 
     /*
@@ -232,5 +234,22 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             FirebaseAuth.getInstance().signOut();
         } catch (Exception e){
         }
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        int i = listaMarcadoresTesoros.indexOf(marker);
+
+        if (i > -1){
+            // Obteniendo tesoro, creando actividad y pasando dato
+            Tesoro tesoro = listaTesoros.get(i);
+            Intent intent = new Intent(MainActivity.this, TesoroDescripcionActivity.class);
+            intent.putExtra("url_imagen", tesoro.getUrl_imagen());
+            intent.putExtra("correo_usuario", tesoro.getCorreo_usuario());
+            intent.putExtra("tesoro_texto", tesoro.getTesoro_texto());
+            startActivity(intent);
+        }
+
+        return false;
     }
 }
