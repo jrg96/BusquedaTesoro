@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "611711252071-2acp0dmt36hadnt8b9s8sp056v2ogfeg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hfad.busquedatesoro",
+            "certificate_hash": "857da0c6a3e292ee474309c43bf6d53110f57a36"
+          }
+        },
+        {
+          "client_id": "611711252071-coi7hhgm6bj7pht7fvqf07qc0lite1ce.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hfad.busquedatesoro",
+            "certificate_hash": "a024ffe77f4557fe9906ec81b9821c50b1c7cadc"
+          }
+        },
+        {
           "client_id": "611711252071-idqcmhe9rt4apj2ss0oi62s04dc7aoo1.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

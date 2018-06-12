@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Looper;
+import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -38,10 +39,14 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.hfad.modelo.Posicion;
 import com.hfad.modelo.Tesoro;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.annotation.Nullable;
 
@@ -59,6 +64,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     private List<Tesoro> listaTesoros = new ArrayList<Tesoro>();
     private List<Marker> listaMarcadoresTesoros = new ArrayList<Marker>();
+    private List<Posicion> listaPosicionesTesoros = new ArrayList<Posicion>();
+
+    private double latitud_actual;
+    private double longitud_actual;
+    private TextToSpeech t1;
+    private Timer timer = new Timer();
+    private TimerTask tareaHablar;
 
 
     @Override
@@ -88,6 +100,16 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         firebaseFirestore = FirebaseFirestore.getInstance();
+
+        // Preparando text to speech
+        t1= new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    t1.setLanguage(new Locale("es", "US"));
+                }
+            }
+        });
     }
 
     @Override
@@ -125,12 +147,47 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                         Marker marcador =  mMap.addMarker(new MarkerOptions()
                             .position(new LatLng(tesoro.latitud, tesoro.longitud)));
                         listaMarcadoresTesoros.add(marcador);
+
+                        Posicion pos = new Posicion(marcador.getPosition().latitude, marcador.getPosition().longitude);
+                        listaPosicionesTesoros.add(pos);
                     }
                 }
             }
         });
 
         mMap.setOnMarkerClickListener(this);
+
+        // Creando timertask de texttospeech
+        tareaHablar = new TimerTask() {
+            @Override
+            public void run() {
+                String utteranceId = this.hashCode() + "";
+                boolean hablar = false;
+
+                // Recorrer lista y encontrar tesoros cercanos
+                if (mCurrLocationMarker != null && listaMarcadoresTesoros.size() > 0){
+                    double x1 = longitud_actual;
+                    double y1 = latitud_actual;
+                    double x2 = 0;
+                    double y2 = 0;
+
+                    for (Posicion marcador : listaPosicionesTesoros){
+                        x2 = marcador.getLongitud();
+                        y2 = marcador.getLatitud();
+
+                        double distancia = Math.hypot(x1-x2, y1-y2);
+                        if (distancia <= 0.001){
+                            hablar = true;
+                        }
+                    }
+                }
+
+                if (hablar) {
+                    t1.speak("tesoro cerca", TextToSpeech.QUEUE_FLUSH, null, utteranceId);
+                }
+            }
+        };
+        timer.schedule(tareaHablar, 0, 5000);
     }
 
     /*
@@ -177,6 +234,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     markerOptions.title("Current Position");
                     markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                     mCurrLocationMarker = mMap.addMarker(markerOptions);
+
+                    // Agregando data para text to speech
+                    latitud_actual = mCurrLocationMarker.getPosition().latitude;
+                    longitud_actual = mCurrLocationMarker.getPosition().longitude;
 
                 }
             }
