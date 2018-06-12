@@ -47,7 +47,12 @@
             android:name=".LoginActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" />
         <activity android:name=".TesoroCrearActivity" />
-        <activity android:name=".TesoroDescripcionActivity"></activity>
+        <activity android:name=".TesoroDescripcionActivity" />
+
+        <service
+            android:name="com.hfad.servicio.ServicioNotificacion"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

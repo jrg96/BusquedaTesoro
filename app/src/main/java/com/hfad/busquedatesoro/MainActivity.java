@@ -41,6 +41,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.hfad.modelo.Posicion;
 import com.hfad.modelo.Tesoro;
+import com.hfad.servicio.ServicioNotificacion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,6 +111,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         });
+
+        // Preparando notificaciones
+        startService(new Intent(this, ServicioNotificacion.class));
     }
 
     @Override
