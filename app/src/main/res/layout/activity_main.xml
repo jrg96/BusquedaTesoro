@@ -21,6 +21,13 @@
         map:menu_labels_position="right">
 
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/btn_comando_voz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add_white_24dp"
+            map:fab_label="Comando de voz"/>
+
+        <com.github.clans.fab.FloatingActionButton
             android:id="@+id/btn_cerrar_sesion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

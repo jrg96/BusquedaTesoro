@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Looper;
+import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -72,6 +73,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private TextToSpeech t1;
     private Timer timer = new Timer();
     private TimerTask tareaHablar;
+
+    static final int check=1111;
 
 
     @Override
@@ -290,6 +293,45 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 startActivity(intent);
             }
         });
+
+        FloatingActionButton fabComandos = (FloatingActionButton) findViewById(R.id.btn_comando_voz);
+        fabComandos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                i.putExtra(RecognizerIntent.EXTRA_PROMPT, "Hable ahora ");
+                startActivityForResult(i, check);
+            }
+        });
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        if (requestCode==check && resultCode==RESULT_OK){
+            ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+
+            String match = results.get(0);
+            Toast.makeText(this, "Palabra encontrada: " + match, Toast.LENGTH_SHORT).show();
+
+            if (match.equals("cerrar sesión")){
+                cerrarSesion();
+                Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(loginIntent);
+            } else if (match.equals("encuéntrame")) {
+                if (mCurrLocationMarker != null) {
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mCurrLocationMarker.getPosition(), 18));
+                }
+            } else if (match.equals("publicar tesoro")){
+                Intent intent = new Intent(MainActivity.this, TesoroCrearActivity.class);
+                intent.putExtra("latitud", "" + mCurrLocationMarker.getPosition().latitude);
+                intent.putExtra("longitud", "" + mCurrLocationMarker.getPosition().longitude);
+                startActivity(intent);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
 
