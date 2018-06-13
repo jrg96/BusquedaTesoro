@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.media.MediaPlayer;
 import android.os.Looper;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
@@ -73,14 +74,21 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private TextToSpeech t1;
     private Timer timer = new Timer();
     private TimerTask tareaHablar;
+    private boolean estado;
 
     static final int check=1111;
+
+    public MediaPlayer media;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Musica de fondo
+        media = MediaPlayer.create(getApplicationContext(), R.raw.music);
+        media.setLooping(true);
 
         // Obteniendo el servicio fusedlocation
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -101,6 +109,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             startActivity(loginIntent);
         } else {
             mUser = mAuth.getCurrentUser();
+            estado = true;
         }
 
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -123,7 +132,29 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public void onResume(){
         super.onResume();
         mUser = mAuth.getCurrentUser();
+        if(mUser != null && !media.isPlaying()){
+            media.start();
+        }
         Toast.makeText(this, "Adquiriendo usuario despues de Auth", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        media.pause();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(!media.isPlaying())
+            media.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        media.pause();
     }
 
     @Override
@@ -134,7 +165,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         } else {
-            Log.d("Dato", "Llamaada por haber permisos");
+            Log.d("Dato", "Llamada por haber permisos");
             this.executeLocationLogic();
             mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
         }
