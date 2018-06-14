@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Looper;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
@@ -327,6 +328,17 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 } else{
                     Toast.makeText(MainActivity.this, "No se puede crear tesoro mientras no se active la ubicación", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        FloatingActionButton fabEnviarSms = (FloatingActionButton) findViewById(R.id.btn_enviar_sms);
+        fabEnviarSms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
+                smsIntent.setData(Uri.parse("smsto:"));
+                smsIntent.putExtra("sms_body"  , "Unete a la comunidad de buscadores de tesoros!");
+                startActivity(smsIntent);
             }
         });
 
