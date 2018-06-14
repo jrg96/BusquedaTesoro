@@ -318,10 +318,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         fabCrearTesoro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, TesoroCrearActivity.class);
-                intent.putExtra("latitud", "" + mCurrLocationMarker.getPosition().latitude);
-                intent.putExtra("longitud", "" + mCurrLocationMarker.getPosition().longitude);
-                startActivity(intent);
+                if (mCurrLocationMarker != null) {
+                    Intent intent = new Intent(MainActivity.this, TesoroCrearActivity.class);
+                    intent.putExtra("latitud", "" + mCurrLocationMarker.getPosition().latitude);
+                    intent.putExtra("longitud", "" + mCurrLocationMarker.getPosition().longitude);
+                    startActivity(intent);
+                } else{
+                    Toast.makeText(MainActivity.this, "No se puede crear tesoro mientras no se active la ubicación", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
