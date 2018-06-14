@@ -75,6 +75,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private Timer timer = new Timer();
     private TimerTask tareaHablar;
     private boolean estado;
+    private boolean puedeHablar = true;
 
     static final int check=1111;
 
@@ -220,7 +221,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 }
 
-                if (hablar) {
+                if (hablar && puedeHablar) {
                     t1.speak("tesoro cerca", TextToSpeech.QUEUE_FLUSH, null, utteranceId);
                 }
             }
@@ -329,10 +330,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-        FloatingActionButton fabComandos = (FloatingActionButton) findViewById(R.id.btn_comando_voz);
+        android.support.design.widget.FloatingActionButton fabComandos = findViewById(R.id.btn_comando_voz);
         fabComandos.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
+                puedeHablar = false;
                 Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                 i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
                 i.putExtra(RecognizerIntent.EXTRA_PROMPT, "Hable ahora ");
@@ -345,6 +347,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
+        puedeHablar = true;
         if (requestCode==check && resultCode==RESULT_OK){
             ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 

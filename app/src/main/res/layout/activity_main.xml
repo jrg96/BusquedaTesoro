@@ -12,6 +12,14 @@
         android:layout_height="match_parent"
         tools:context="com.hfad.busquedatesoro.MainActivity" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_comando_voz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|left"
+        android:layout_margin="16dp"
+        android:src="@drawable/baseline_mic_white_24" />
+
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/menu_green"
         android:layout_width="wrap_content"
@@ -19,13 +27,6 @@
         map:menu_icon="@drawable/baseline_menu_white_24"
         map:menu_openDirection="down"
         map:menu_labels_position="right">
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/btn_comando_voz"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_add_white_24dp"
-            map:fab_label="Comando de voz"/>
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/btn_cerrar_sesion"
