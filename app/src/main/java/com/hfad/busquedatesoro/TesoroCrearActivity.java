@@ -1,8 +1,12 @@
 package com.hfad.busquedatesoro;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -24,7 +28,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -50,9 +56,15 @@ public class TesoroCrearActivity extends AppCompatActivity {
     private String latitud;
     private String longitud;
 
+    final int FOTOGRAFIA = 654;//Codigo de uso de camara
+    Uri file;//El archivo a crear
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
         setContentView(R.layout.activity_tesoro_crear);
 
         // Obteniendo datos del intent principal (latitud y longitud)
@@ -86,22 +98,27 @@ public class TesoroCrearActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE && data != null) {
-            mAttachmentUri = data.getData();
-            imgTesoro.setImageURI(mAttachmentUri);
+        if (requestCode==FOTOGRAFIA){
+            if(resultCode == RESULT_OK){
+                imgTesoro.setImageURI(file); // Aqui pone la imagen en la ImageView despues de una fotografia;
+            }
+            else{
+                Toast.makeText(getApplicationContext(),"fotografia No tomada", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
     public void btn_seleccionar_imagen(View v){
-        Intent intent = new Intent();
-        intent.setType(TYPE_IMAGE);
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, SELECT_PICTURE), PICK_IMAGE);
+        Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File photo =new File("/storage/sdcard0/Pictures/"+String.valueOf(Calendar.getInstance().getTimeInMillis())+".jpg");
+        file=Uri.fromFile(photo);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, file);
+        startActivityForResult(intent,FOTOGRAFIA);
     }
 
     public void btn_publicar_tesoro(View v){
         btnPublicar.setEnabled(false);
-
+        mAttachmentUri = file;
         if (!txtTextoTesoro.getText().toString().isEmpty() || (mAttachmentUri != null)){
 
             final String texto = txtTextoTesoro.getText().toString();
