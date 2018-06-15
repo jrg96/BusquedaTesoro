@@ -88,6 +88,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Musica de fondo
+        media = MediaPlayer.create(getApplicationContext(), R.raw.music);
+        media.setLooping(true);
+        media.setVolume(0,20);
+
         // Obteniendo el servicio fusedlocation
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mAuth = FirebaseAuth.getInstance();
@@ -103,11 +108,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         // Si no hay access token o usuario, cerrar residuos de sesion, redirigir a logueo FB
         if ((AccessToken.getCurrentAccessToken() == null) || (mAuth.getCurrentUser() == null)) {
             this.cerrarSesion();
+            estado = false;
             Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(loginIntent);
         } else {
             mUser = mAuth.getCurrentUser();
             estado = true;
+            media.setVolume(0,50);
+            media.start();
         }
 
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -122,10 +130,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-        //Musica de fondo
-        media = MediaPlayer.create(getApplicationContext(), R.raw.music);
-        media.setLooping(true);
-
         // Preparando notificaciones
         startService(new Intent(this, ServicioNotificacion.class));
     }
@@ -135,6 +139,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         super.onResume();
         mUser = mAuth.getCurrentUser();
         if(mUser != null && !media.isPlaying()){
+            media.setVolume(0,20);
             media.start();
         }
         Toast.makeText(this, "Adquiriendo usuario despues de Auth", Toast.LENGTH_SHORT).show();
@@ -149,8 +154,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onStart() {
         super.onStart();
-        if(!media.isPlaying())
+        if(!media.isPlaying()){
+            media.setVolume(0,20);
             media.start();
+        }
     }
 
     @Override
@@ -370,6 +377,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 cerrarSesion();
                 Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(loginIntent);
+                finish();
             } else if (match.equals("encuéntrame")) {
                 if (mCurrLocationMarker != null) {
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mCurrLocationMarker.getPosition(), 18));

@@ -152,6 +152,7 @@ public class TesoroCrearActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<DocumentReference> task) {
                                         if (task.isSuccessful()){
                                             Toast.makeText(TesoroCrearActivity.this, "Tesoro publicado con exito", Toast.LENGTH_SHORT).show();
+                                            finish();
                                         } else{
                                             Toast.makeText(TesoroCrearActivity.this, "Error al publicar tesoro", Toast.LENGTH_SHORT).show();
                                         }
