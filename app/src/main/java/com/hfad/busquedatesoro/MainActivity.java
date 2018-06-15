@@ -88,10 +88,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Musica de fondo
-        media = MediaPlayer.create(getApplicationContext(), R.raw.music);
-        media.setLooping(true);
-
         // Obteniendo el servicio fusedlocation
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mAuth = FirebaseAuth.getInstance();
@@ -125,6 +121,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         });
+
+        //Musica de fondo
+        media = MediaPlayer.create(getApplicationContext(), R.raw.music);
+        media.setLooping(true);
 
         // Preparando notificaciones
         startService(new Intent(this, ServicioNotificacion.class));
