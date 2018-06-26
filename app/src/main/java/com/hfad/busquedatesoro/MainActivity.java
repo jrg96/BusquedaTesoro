@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -47,6 +48,7 @@ import com.hfad.modelo.Tesoro;
 import com.hfad.servicio.ServicioNotificacion;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
@@ -420,10 +422,15 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             // Obteniendo tesoro, creando actividad y pasando dato
             Tesoro tesoro = listaTesoros.get(i);
             Intent intent = new Intent(MainActivity.this, TesoroDescripcionActivity.class);
+
+            long millisecond = tesoro.getTimestamp().getTime();
+            String dateString = DateFormat.format("MM/dd/yyyy", new Date(millisecond)).toString();
+
             intent.putExtra("url_imagen", tesoro.getUrl_imagen());
             intent.putExtra("correo_usuario", tesoro.getCorreo_usuario());
             intent.putExtra("tesoro_texto", tesoro.getTesoro_texto());
             intent.putExtra("tesoro_id", tesoro.getTesoro_id());
+            intent.putExtra("fecha_tesoro", dateString);
             startActivity(intent);
         }
 

@@ -40,6 +40,7 @@ public class TesoroDescripcionActivity extends AppCompatActivity {
     private TextView blog_user_name;
     private ImageView blog_image;
     private TextView blog_desc;
+    private TextView blog_date;
     private EditText comment_field;
     private ImageView comment_post_btn;
 
@@ -61,6 +62,7 @@ public class TesoroDescripcionActivity extends AppCompatActivity {
         blog_user_name = findViewById(R.id.blog_user_name);
         blog_image = findViewById(R.id.blog_image);
         blog_desc = findViewById(R.id.blog_desc);
+        blog_date = findViewById(R.id.blog_date);
         comment_field = findViewById(R.id.comment_field);
         comment_post_btn = findViewById(R.id.comment_post_btn);
         lista_comentario = findViewById(R.id.lista_comentario);
@@ -69,8 +71,10 @@ public class TesoroDescripcionActivity extends AppCompatActivity {
         Intent intent = getIntent();
         blog_user_name.setText(intent.getStringExtra("correo_usuario"));
         blog_desc.setText(intent.getStringExtra("tesoro_texto"));
+        blog_date.setText(intent.getStringExtra("fecha_tesoro"));
         tesoro_id = intent.getStringExtra("tesoro_id");
         Picasso.with(getApplicationContext()).load(intent.getStringExtra("url_imagen")).into(blog_image);
+
 
         firebaseFirestore = FirebaseFirestore.getInstance();
 

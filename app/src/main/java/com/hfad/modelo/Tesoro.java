@@ -1,6 +1,7 @@
 package com.hfad.modelo;
 
 import com.google.firebase.Timestamp;
+import java.util.Date;
 
 import java.sql.Time;
 
@@ -11,7 +12,7 @@ public class Tesoro {
     public double longitud;
     public String tesoro_texto;
     public String url_imagen;
-    public Timestamp timestamp;
+    public Date timestamp;
     public String tesoro_id;
 
     public Tesoro(){
@@ -25,7 +26,7 @@ public class Tesoro {
         this.tesoro_id = tesoro_id;
     }
 
-    public Tesoro(String id_usuario, double latitud, double longitud, String tesoro_texto, String url_imagen, Timestamp timestamp, String correo_usuario) {
+    public Tesoro(String id_usuario, double latitud, double longitud, String tesoro_texto, String url_imagen, Date timestamp, String correo_usuario) {
         this.id_usuario = id_usuario;
         this.latitud = latitud;
         this.longitud = longitud;
@@ -47,11 +48,11 @@ public class Tesoro {
         return id_usuario;
     }
 
-    public Timestamp getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
+    public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
 
