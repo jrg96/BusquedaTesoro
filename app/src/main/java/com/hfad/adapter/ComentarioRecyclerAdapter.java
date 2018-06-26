@@ -2,6 +2,7 @@ package com.hfad.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import com.hfad.modelo.Comentario;
 
 import org.w3c.dom.Text;
 
+import java.util.Date;
 import java.util.List;
 
 public class ComentarioRecyclerAdapter extends RecyclerView.Adapter<ComentarioRecyclerAdapter.ViewHolder>{
@@ -33,8 +35,20 @@ public class ComentarioRecyclerAdapter extends RecyclerView.Adapter<ComentarioRe
     public void onBindViewHolder(ComentarioRecyclerAdapter.ViewHolder holder, int position) {
         holder.setIsRecyclable(false);
 
+        long millisecond = 0;
+        String dateString = "";
+        try
+        {
+            millisecond = listaComentarios.get(position).getTimestamp().getTime();
+            dateString = DateFormat.format("MM/dd/yyyy", new Date(millisecond)).toString();
+        }
+        catch(Exception e)
+        {
+
+        }
+
         String texto_comentario = listaComentarios.get(position).getTexto_comentario();
-        holder.setTexto_Comentario(texto_comentario);
+        holder.setTexto_Comentario(dateString + ": " + texto_comentario);
 
         String email = listaComentarios.get(position).getEmail_usuario_comentario();
         holder.setEmailUsuario(email);

@@ -423,8 +423,17 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             Tesoro tesoro = listaTesoros.get(i);
             Intent intent = new Intent(MainActivity.this, TesoroDescripcionActivity.class);
 
-            long millisecond = tesoro.getTimestamp().getTime();
-            String dateString = DateFormat.format("MM/dd/yyyy", new Date(millisecond)).toString();
+            long millisecond = 0;
+            String dateString = "";
+            try
+            {
+                millisecond = tesoro.getTimestamp().getTime();
+                dateString = DateFormat.format("MM/dd/yyyy", new Date(millisecond)).toString();
+            }
+            catch(Exception e)
+            {
+
+            }
 
             intent.putExtra("url_imagen", tesoro.getUrl_imagen());
             intent.putExtra("correo_usuario", tesoro.getCorreo_usuario());

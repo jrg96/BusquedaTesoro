@@ -2,16 +2,18 @@ package com.hfad.modelo;
 
 import com.google.firebase.Timestamp;
 
+import java.util.Date;
+
 public class Comentario {
     public String id_usuario_comentario;
     public String email_usuario_comentario;
-    public Timestamp timestamp;
+    public Date timestamp;
     public String texto_comentario;
 
     public Comentario() {
     }
 
-    public Comentario(String id_usuario_comentario, String email_usuario_comentario, Timestamp timestamp, String texto_comentario) {
+    public Comentario(String id_usuario_comentario, String email_usuario_comentario, Date timestamp, String texto_comentario) {
         this.id_usuario_comentario = id_usuario_comentario;
         this.email_usuario_comentario = email_usuario_comentario;
         this.timestamp = timestamp;
@@ -34,11 +36,11 @@ public class Comentario {
         this.email_usuario_comentario = email_usuario_comentario;
     }
 
-    public Timestamp getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
+    public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
 
